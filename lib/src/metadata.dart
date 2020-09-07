@@ -958,7 +958,19 @@ double _castAsDouble(dynamic variable) {
   if (variable is int) {
     return variable.toDouble();
   }
-  return (!(variable is double)) ? double.parse(variable.toString()) : variable;
+  try {
+    return (!(variable is double)) ? double.parse(variable.toString()) : variable;
+  }
+  on FormatException {
+    // perhaps we have a rational type (numerator/denominator), e.g. TAG_GPS_DOP
+    var split = variable.toString().split("/");
+    if (split.length == 2) {
+      double value = int.parse(split[0]) / int.parse(split[1]);
+      return value;
+    } else {
+      rethrow;
+    }
+  }
 }
 
 String _castAsString(dynamic variable) {
