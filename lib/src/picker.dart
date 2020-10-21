@@ -159,11 +159,12 @@ class MultiImagePicker {
   }
 
   // Requests image metadata for a given [identifier]
-  static Future<Metadata> requestMetadata(String identifier) async {
+  static Future<Metadata> requestMetadata(String identifier, {bool requireOriginal = false}) async {
     Map<dynamic, dynamic> map = await _channel.invokeMethod(
       "requestMetadata",
       <String, dynamic>{
         "identifier": identifier,
+        "requireOriginal": requireOriginal,
       },
     );
 

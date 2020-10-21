@@ -287,11 +287,12 @@ public class MultiImagePickerPlugin implements
             }
         } else if (REQUEST_METADATA.equals(call.method)) {
             final String identifier = call.argument("identifier");
+            final Boolean requireOriginal = call.argument("requireOriginal");
 
             Uri uri = Uri.parse(identifier);
 
             // Scoped storage related code. We can only get gps location if we ask for original image
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (requireOriginal && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 uri = MediaStore.setRequireOriginal(uri);
             }
 
