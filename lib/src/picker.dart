@@ -158,7 +158,12 @@ class MultiImagePicker {
     }
   }
 
-  // Requests image metadata for a given [identifier]
+  /// Requests image metadata for a given [identifier]
+  ///
+  /// [requireOriginal] calls MediaStore.setRequireOriginal
+  /// on Android which will retrieve privacy-sensitive EXIF
+  /// tags like location but one must hold the ACCESS_MEDIA_LOCATION
+  /// permission starting from Android Q.
   static Future<Metadata> requestMetadata(String identifier, {bool requireOriginal = false}) async {
     Map<dynamic, dynamic> map = await _channel.invokeMethod(
       "requestMetadata",
